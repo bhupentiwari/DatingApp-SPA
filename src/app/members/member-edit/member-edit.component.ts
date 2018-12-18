@@ -20,9 +20,9 @@ export class MemberEditComponent implements OnInit {
       if (this.editForm.dirty) {
         $event.returnValue = false;
       }
-    }    
+    }
   constructor(private authService: AuthService,
-              private rout: ActivatedRoute, 
+              private rout: ActivatedRoute,
               private alertify: AlertifyService,
               private userService: UserService
               ) { }

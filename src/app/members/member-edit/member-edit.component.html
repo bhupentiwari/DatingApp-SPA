@@ -85,7 +85,9 @@
 
             </form>
           </tab>
-          <tab heading="Photo" id="tab2"></tab>
+          <tab heading="Edit Photos" id="tab2">
+            <app-photo-editor [photos]="user.photos"></app-photo-editor>
+          </tab>
 
         </tabset>
       </div>
