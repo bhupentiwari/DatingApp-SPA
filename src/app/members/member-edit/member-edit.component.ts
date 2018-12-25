@@ -36,7 +36,7 @@ export class MemberEditComponent implements OnInit {
     this.authService.currentPhotoUrl.subscribe(p => this.photoUrl = p);
   }
   updateChanges() {
-    this.userService.updateUser(this.authService.decodedToken.nameid,this.user).subscribe( next =>{
+    this.userService.updateUser(this.authService.decodedToken.nameid, this.user).subscribe( next =>{
       this.alertify.success('Profile updated successfull');
       this.editForm.reset(this.user);
     });
