@@ -21,7 +21,7 @@ constructor(private http: HttpClient) { }
 //     return this.http.get<User[]>(this.baseURL + 'Users');
 // }
 
-getUsers(page?, itemPerPage?,userParams?): Observable<PaginatedResult<User[]>> {
+getUsers(page?, itemPerPage?, userParams?, likesParam?): Observable<PaginatedResult<User[]>> {
 
   const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
   let params = new HttpParams();
@@ -37,11 +37,16 @@ getUsers(page?, itemPerPage?,userParams?): Observable<PaginatedResult<User[]>> {
     params = params.append('OrderBy', userParams.orderBy);
   }
 
+  if (likesParam === 'Likers') {
+    params = params.append('likers', 'true');
+  }
+  if (likesParam === 'Likees') {
+    params = params.append('likees', 'true');
+  }
+  
   return this.http.get<User[]>(this.baseURL + 'Users', {observe : 'response', params})
       .pipe(
           map(response => {
-            //console.log(response);
-            //console.log(response.body);
             paginatedResult.result = response.body;
             if (response.headers.get('Pagination') != null ) {
               paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
@@ -63,5 +68,8 @@ setMainPhoto(userID: number, id: number) {
 }
 deletePhoto(userID: number, id: number) {
   return this.http.delete(this.baseURL + 'users/' + userID + '/photos/' + id );
+}
+sendLike(id: number, receipientId: number){
+  return this.http.post(this.baseURL + 'users/' + id + '/like/' + receipientId, {} );
 }
 }

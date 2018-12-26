@@ -4,6 +4,7 @@ import { UserService } from 'src/app/_service/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { AlertifyService } from 'src/app/_service/alertify.service';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
+import { AuthService } from '../../_service/auth.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -16,7 +17,7 @@ export class MemberDetailComponent implements OnInit {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
 
-  constructor(private userService: UserService,
+  constructor(private userService: UserService, private authService: AuthService,
               private route: ActivatedRoute, private alertify: AlertifyService) { }
 
   ngOnInit() {
@@ -50,6 +51,15 @@ export class MemberDetailComponent implements OnInit {
         });
       }
       return imageURLs;
+  }
+
+  sendLike(id: number) {
+    this.userService.sendLike(this.authService.decodedToken.nameid, id)
+        .subscribe(data => {
+          this.alertify.success('You have liked: ' + this.user.knownAs);
+        }, error => {
+          this.alertify.error(error);
+        });
   }
 
   // Commented as we are using now route resolver
